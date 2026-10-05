@@ -96,6 +96,13 @@ class watchlist(classes.watchlist):
         if len(users) > 0:
             ui_print('done')
 
+        # Import new items from the optional shared Plex Friends RSS feed
+        try:
+            from content.services import plex_rss
+            plex_rss.sync(self)
+        except Exception as e:
+            ui_print("[plex rss] sync error: " + str(e), debug=ui_settings.debug)
+
     def remove(self, item):
         if hasattr(item, 'user'):
             if isinstance(item.user[0], list):
